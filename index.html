@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>FinVantage Academy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<div class="app-shell">
+
+    <!-- 1. LANDING PAGE -->
+    <div id="landing-screen" class="screen active">
+        <div>
+            <div class="logo-area animate">
+                <div class="logo-box">🎓</div>
+                <div style="font-weight: 700; font-size: 18px;">FinVantage</div>
+            </div>
+
+            <div class="hero-area animate d-1">
+                <h1>Banking<br><span style="color: var(--primary);">Mastery</span></h1>
+                <p>Professional financial training. Verified facts & real-world scenarios.</p>
+            </div>
+
+            <div class="grid-area animate d-2">
+                <div class="feat-box" onclick="app.nav('learn-screen')">
+                    <span class="feat-icon">📚</span>
+                    <span class="feat-label">Learn</span>
+                </div>
+                <div class="feat-box" onclick="app.nav('analyze-screen')">
+                    <span class="feat-icon">📊</span>
+                    <span class="feat-label">Tools</span>
+                </div>
+                <div class="feat-box" onclick="app.nav('leaderboard-screen')">
+                    <span class="feat-icon">🏆</span>
+                    <span class="feat-label">Ranks</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="fact-card animate d-3">
+            <span class="tag">VERIFIED FACT</span>
+            <div id="fact-text-container" class="fact-content">
+                <h3 id="fact-title">Loading...</h3>
+                <p id="fact-body">Loading facts...</p>
+            </div>
+            <div class="load-bar"></div>
+        </div>
+
+        <div class="animate d-3">
+            <button class="btn" onclick="app.nav('auth-screen')">Start Learning</button>
+        </div>
+    </div>
+
+    <!-- 2. AUTH SCREEN -->
+    <div id="auth-screen" class="screen center-content">
+        <div class="back-row absolute-top" onclick="app.nav('landing-screen')">
+            <span class="back-icon">←</span> Back
+        </div>
+
+        <h2 class="animate">Portal Login</h2>
+        <p class="animate d-1 subtext">Access your dashboard.</p>
+        
+        <input class="animate d-1" type="text" id="username" placeholder="Username">
+        <input class="animate d-2" type="password" id="password" placeholder="Password">
+        
+        <button class="btn animate d-3" onclick="auth.login()">Login</button>
+        <button class="btn btn-outline animate d-3" onclick="auth.signup()">New Student</button>
+    </div>
+
+    <!-- 3. DASHBOARD -->
+    <div id="dashboard-screen" class="screen">
+        <div class="dash-header">
+            <div>
+                <h2>Hi, <span id="user-name" style="color: var(--primary);">Student</span></h2>
+                <div class="subtext-small">Ready to play?</div>
+            </div>
+            <!-- Clicking XP Badge also goes to rewards -->
+            <div class="xp-badge" onclick="app.nav('rewards-screen')" style="cursor:pointer">⭐ <span id="user-xp">0</span> XP</div>
+        </div>
+
+        <div class="stats-row">
+            <div class="stat-item">
+                <div class="stat-val" id="total-games">0</div>
+                <div class="stat-label">QUIZZES</div>
+            </div>
+            <div class="divider"></div>
+            <div class="stat-item">
+                <div class="stat-val" id="dash-rank">-</div>
+                <div class="stat-label">RANK</div>
+            </div>
+        </div>
+
+        <h4 class="section-title">SELECT LEVEL</h4>
+        
+        <div class="level-card lvl-easy" onclick="quiz.start('easy')">
+            <div class="lvl-num">1</div>
+            <div class="lvl-info">
+                <div class="lvl-title">Novice</div>
+                <div class="lvl-desc">Banking Basics & ATMs</div>
+            </div>
+            <div class="play-btn">PLAY</div>
+        </div>
+
+        <div class="level-card lvl-med" onclick="quiz.start('medium')">
+            <div class="lvl-num">2</div>
+            <div class="lvl-info">
+                <div class="lvl-title">Professional</div>
+                <div class="lvl-desc">Loans, KYC & Credit</div>
+            </div>
+            <div class="play-btn">PLAY</div>
+        </div>
+
+        <div class="level-card lvl-hard" onclick="quiz.start('hard')">
+            <div class="lvl-num">3</div>
+            <div class="lvl-info">
+                <div class="lvl-title">Master</div>
+                <div class="lvl-desc">Global Finance & Forex</div>
+            </div>
+            <div class="play-btn">PLAY</div>
+        </div>
+    </div>
+
+    <!-- 4. ADMIN PANEL -->
+    <div id="admin-screen" class="screen">
+        <div class="back-row" onclick="auth.logout()">
+            <span class="back-icon">←</span> Logout
+        </div>
+
+        <div class="dash-header">
+            <h2>Course Creator</h2>
+            <span class="admin-badge">ADMIN</span>
+        </div>
+        
+        <!-- Question Editor -->
+        <div class="glass-card">
+            <label>Question Text</label>
+            <textarea id="new-q-text" placeholder="e.g. What is the currency of Japan?"></textarea>
+            
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+                <div><label>Option A</label><input type="text" id="new-opt-1" placeholder="A"></div>
+                <div><label>Option B</label><input type="text" id="new-opt-2" placeholder="B"></div>
+                <div><label>Option C</label><input type="text" id="new-opt-3" placeholder="C"></div>
+                <div><label>Option D</label><input type="text" id="new-opt-4" placeholder="D"></div>
+            </div>
+
+            <label>Correct Answer</label>
+            <select id="new-correct-idx">
+                <option value="0">Option A</option>
+                <option value="1">Option B</option>
+                <option value="2">Option C</option>
+                <option value="3">Option D</option>
+            </select>
+            
+            <label>Target Level</label>
+            <select id="new-difficulty">
+                <option value="easy">Novice (Easy)</option>
+                <option value="medium">Professional (Med)</option>
+                <option value="hard">Master (Hard)</option>
+            </select>
+            
+            <button class="btn" onclick="admin.addQuestion()">Save Question</button>
+            <p id="admin-msg" style="text-align:center; font-size:12px; margin-top:5px; color:#10b981;"></p>
+        </div>
+
+        <!-- Manage Students List -->
+        <div class="glass-card">
+            <label style="color:var(--primary); font-weight:700;">Manage Students</label>
+            <div id="admin-user-list" style="margin-top:10px;"></div>
+        </div>
+
+        <!-- Manage Questions List -->
+        <div class="glass-card">
+            <label style="color:var(--primary); font-weight:700; margin-bottom:10px; display:block;">Database Questions</label>
+            <div id="admin-question-list" style="max-height: 250px; overflow-y: auto;"></div>
+        </div>
+    </div>
+
+    <!-- 5. QUIZ -->
+    <div id="quiz-screen" class="screen">
+        <div class="dash-header" style="margin-bottom: 15px;">
+            <div class="quiz-exit-btn" onclick="quiz.abort()">
+                <span style="font-size: 18px; margin-right: 5px;">✕</span> QUIT
+            </div>
+            <span id="lvl-badge">EASY</span>
+        </div>
+        
+        <div class="progress-bg"><div id="progress-bar"></div></div>
+        <h3 id="q-text">Loading...</h3>
+        <div id="options-container"></div>
+    </div>
+
+    <!-- 6. RESULTS -->
+    <div id="result-screen" class="screen center-content">
+        <div style="font-size:60px; margin-bottom:20px;">🏆</div>
+        <h2 style="margin:0;">Level Complete</h2>
+        <h1 style="font-size:48px; color:var(--primary); margin:15px 0;"><span id="final-score">0</span>%</h1>
+        <p class="subtext">XP added to your profile.</p>
+        <button class="btn" onclick="app.nav('dashboard-screen')">Continue</button>
+    </div>
+
+    <!-- 7. LEARN -->
+    <div id="learn-screen" class="screen">
+        <div class="back-row" onclick="app.nav('landing-screen')">
+            <span class="back-icon">←</span> Back
+        </div>
+        <h2>Banking Terms</h2>
+        <div class="term-card"><div class="term-title">Fiat Money</div><div class="term-def">Currency not backed by gold, but by government decree (USD, INR).</div></div>
+        <div class="term-card"><div class="term-title">NPA</div><div class="term-def">Non-Performing Asset. A loan where the borrower has stopped making interest or principal repayments for 90 days.</div></div>
+        <div class="term-card"><div class="term-title">SWIFT</div><div class="term-def">Society for Worldwide Interbank Financial Telecommunication. Secure messaging for global transfers.</div></div>
+        <div class="term-card"><div class="term-title">Repo Rate</div><div class="term-def">Rate at which the Central Bank (RBI/Fed) lends money to commercial banks.</div></div>
+        <div class="term-card"><div class="term-title">Inflation</div><div class="term-def">The rate at which the general level of prices for goods and services is rising.</div></div>
+        <div class="term-card"><div class="term-title">Liquidity</div><div class="term-def">How easily an asset or security can be converted into ready cash without affecting its market price.</div></div>
+        <div class="term-card"><div class="term-title">CRR</div><div class="term-def">Cash Reserve Ratio. The share of Net Demand and Time Liabilities that banks must maintain with the Central Bank.</div></div>
+    </div>
+
+    <!-- 8. LEADERBOARD -->
+    <div id="leaderboard-screen" class="screen">
+        <div class="back-row" onclick="app.navBack()">
+            <span class="back-icon">←</span> Back
+        </div>
+        <h2>Leaderboard</h2>
+        <p class="subtext" style="margin-top:0;">Top Players.</p>
+        <div id="leaderboard-list"></div>
+        <p id="empty-lb-msg" style="text-align:center; color:#666; font-size:12px; display:none;">No players yet. Be the first!</p>
+    </div>
+
+    <!-- 9. ANALYZE -->
+    <div id="analyze-screen" class="screen">
+        <div class="back-row" onclick="app.nav('landing-screen')">
+            <span class="back-icon">←</span> Back
+        </div>
+        <h2>Loan Calculator</h2>
+        <div class="glass-card">
+            <label>Amount</label><input type="number" id="c-amount" placeholder="10000" oninput="tools.calcEMI()">
+            <label>Interest %</label><input type="number" id="c-rate" placeholder="5" oninput="tools.calcEMI()">
+            <label>Years</label><input type="number" id="c-years" placeholder="2" oninput="tools.calcEMI()">
+            <div class="calc-box">
+                <div class="subtext-small">EMI</div>
+                <div class="calc-val">$<span id="c-result">0</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 10. REWARDS SCREEN -->
+    <div id="rewards-screen" class="screen">
+        <div class="back-row" onclick="app.nav('dashboard-screen')">
+            <span class="back-icon">←</span> Back
+        </div>
+        
+        <div class="dash-header">
+            <div>
+                <h2>Rewards</h2>
+                <div class="subtext-small">Unlock items with XP!</div>
+            </div>
+            <div class="xp-badge">⭐ <span id="reward-user-xp">0</span></div>
+        </div>
+
+        <div id="reward-grid" class="reward-grid">
+            <!-- Cards injected via JS -->
+        </div>
+    </div>
+
+    <!-- REWARD POPUP MODAL -->
+    <div id="reward-modal" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-icon" id="r-modal-icon">🎁</div>
+            <h3 id="r-modal-title">Reward Unlocked!</h3>
+            <p id="r-modal-desc">You found a rare item.</p>
+            <button class="btn" onclick="rewards.closeModal()">Awesome!</button>
+        </div>
+    </div>
+
+    <!-- BOTTOM NAV -->
+    <div class="bottom-nav" id="btm-nav" style="display:none;">
+        <div class="nav-btn active" onclick="app.nav('dashboard-screen')"><span class="nav-icon">🏠</span> Home</div>
+        <div class="nav-btn" onclick="app.nav('rewards-screen')"><span class="nav-icon">🎁</span> Rewards</div>
+        <div class="nav-btn" onclick="app.nav('leaderboard-screen')"><span class="nav-icon">🏆</span> Rank</div>
+        <div class="nav-btn" onclick="auth.logout()"><span class="nav-icon">🚪</span> Exit</div>
+    </div>
+
+</div>
+
+<script src="assets/js/app.js"></script>
+</body>
+</html>
